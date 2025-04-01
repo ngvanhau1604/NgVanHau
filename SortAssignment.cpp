@@ -5,7 +5,7 @@ int Delete_info(PTR &First, int x)
     Int del_Count = 0;
 
     if (First == NULL)
-        return 0; // empty list
+        return 0;
     if (First->info == x)
     {
         Delete_First(First);
