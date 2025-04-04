@@ -329,19 +329,22 @@ int XoaSV(PTR &First, int maso)
 {
 	if (First == NULL)
 		return 0;
-
-	if (First->sv.maso == maso)
+	if (XacNhan("Ban co muon xoa sinh vien khong? (Y/N) :"))
 	{
-		Delete_First(First);
-		return 1;
-	}
 
-	for (PTR p = First; p->next != NULL; p = p->next)
-	{
-		if (p->next->sv.maso == maso)
+		if (First->sv.maso == maso)
 		{
-			Delete_after(p);
+			Delete_First(First);
 			return 1;
+		}
+
+		for (PTR p = First; p->next != NULL; p = p->next)
+		{
+			if (p->next->sv.maso == maso)
+			{
+				Delete_after(p);
+				return 1;
+			}
 		}
 	}
 	return 0;
@@ -426,7 +429,11 @@ PTRname SearchName(PTR First, char *ten)
 
 void ThemSVTheoViTri(PTR &First, int i)
 {
-	if (i < 1)
+	if (i < 0)
+	{
+		return;
+	}
+	if (i <= 1)
 	{
 		NhapSV_VeDau(First);
 		return;
@@ -437,6 +444,11 @@ void ThemSVTheoViTri(PTR &First, int i)
 	{
 		p = p->next;
 	}
+	PTR newNode = new node;
+	if (NhapSV(First, newNode->sv) == 0)
+		return;
+	newNode->next = p->next;
+	p->next = newNode;
 
 	if (p == NULL)
 		Nhap_DSSV(First);
@@ -542,6 +554,7 @@ int main()
 			NhapSV(First, sv);
 			cout << "Da nhap sinh vien co ma so " << sv.maso << endl;
 			themSV_cothuTu(First, sv);
+			cout << "Da them sinh vien co ma so " << sv.maso << endl;
 			Sleep(3000);
 			break;
 
